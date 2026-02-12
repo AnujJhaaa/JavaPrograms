@@ -18,7 +18,10 @@ public class FindAge {
 
         int age = 0;
 
-        if(date >=12 && month <=2){
+        if(month == 2 && date>12) {
+        	age = 2025 - year;
+        }
+        else if(month <2){
             age  = 2026 - year;
         }
         else {
@@ -28,7 +31,9 @@ public class FindAge {
         System.out.println("Date of Birth : " + date + " " + months[month-1] + ", " + year);
         System.out.println("Age : " + age + "yrs.");
         
-        /*String temString = "";
+        /*dateOfBirth = dateOfBirth + "-";
+
+        String temString = "";
         int[] dob = {0,0,0};
         int dobIndex=0;
 
@@ -45,6 +50,7 @@ public class FindAge {
         }
 
         int age = 0;
+        //feb 12 checking
         if(dob[0]>=12 && dob[1]<=2){
             age = 2026 - dob[2];
         }
