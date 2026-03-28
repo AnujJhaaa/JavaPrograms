@@ -246,6 +246,9 @@ public class AccountDaoImplentation implements AccountDao {
 				account.getAccount_holder_name(),
 				account.getAccount_type());
 		try {
+			// transaction based queries
+			conn.setAutoCommit(false);
+			
 			int rowsAffected = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			if(rowsAffected>0) {
 				ResultSet resultSet = stmt.getGeneratedKeys();
@@ -262,13 +265,23 @@ public class AccountDaoImplentation implements AccountDao {
 				
 				rowsAffected = stmt.executeUpdate(sql);
 				if(rowsAffected>0) {
+					//if both queries executed successfully commit
+					conn.commit();
 					return true;
 				}
 			}
 			
 		}	catch(SQLException sqlEx) {
 			sqlEx.printStackTrace();
-		}	finally {
+			
+				//if not the roll-back the changes
+				try {
+					conn.rollback();
+				}	catch(SQLException sqlEx2) {
+					sqlEx2.printStackTrace();
+				}	
+		}
+			finally {
 			DatabaseUtility.closeStatement(stmt);
 			DatabaseUtility.closeConnection(conn);
 		}
